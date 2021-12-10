@@ -1,0 +1,179 @@
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>BigO!</title>
+    <link rel="icon" type="image/x-icon" href="img/biog.png" />
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
+      rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
+      rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+
+  <body>
+
+    <body id="page-top">
+      <!-- Navigation-->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+          aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Alterna navegação">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <span class="navbar-brand clickable" onclick="window.location.href='home'">BigO!</span>
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item"><a class="nav-link clickable" data-toggle="modal" data-target="#myModalAdd"
+                onclick="window.location.href='feed'">Meu feed</a></li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+          </form>
+        </div>
+      </nav>
+
+      <body>
+        <div class="container">
+          <h2>Perfil do usuario</h2>
+          <table action="/auth" class="table table-dark " id="mytable">
+            <thead>
+              <tr>
+
+                <th>Nome</th>
+                <th>email</th>
+                <th>senha</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {{#each results}}
+                <tr>
+
+                  <td>{{ usuario_name }}</td>
+                  <td>{{ usuario_email }}</td>
+                  <td>{{ usuario_senha }}</td>
+                  <td>
+                    <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ usuario_id }}"
+                      data-usuario_name="{{ usuario_name }}" data-usuario_email="{{ usuario_email }}"
+                      data-usuario_senha="{{ usuario_senha }}">Editar perfil</a>
+                    <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ usuario_id }}">Apagar
+                      perfil</a>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+
+
+        <!-- Edit usuario Modal-->
+        <form action="/update" method="post">
+          <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Editar conta</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <input type="text" name="usuario_name" class="form-control usuario_name" placeholder="usuario Name"
+                      required>
+                  </div>
+
+                  <div class="form-group">
+                    <input type="text" name="usuario_email" class="form-control email" placeholder="email" required>
+                  </div>
+
+                  <div class="form-group">
+                    <input type="password" name="usuario_senha" class="form-control senha" placeholder="senha" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <input type="hidden" name="id" class="usuario_id">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">fechar</button>
+                  <button type="submit" class="btn btn-primary">Atualizar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Delete usuario Modal-->
+        <form id="add-row-form" action="/delete" method="post">
+          <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="myModalLabel">Delete usuario</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                      aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                  <strong>Tem certeza que que deletar sua conta ?</strong>
+                </div>
+                <div class="modal-footer">
+                  <input type="hidden" name="usuario_id" class="form-control usuario_id2" required>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                  <button type="submit" class="btn btn-success">Deletar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script>
+          $(document).ready(function () {
+            //showing data to modal for edit record
+            $('#mytable').on('click', '.edit', function () {
+              var usuario_id = $(this).data('id');
+              var usuario_name = $(this).data('usuario_name');
+              var usuario_email = $(this).data('usuario_email');
+              var usuario_senha = $(this).data('usuario_senha');
+              $('#EditModal').modal('show');
+              $('.usuario_name').val(usuario_name);
+              $('.email').val(usuario_email);
+              $('.senha').val(usuario_senha);
+              $('.usuario_id').val(usuario_id);
+
+            });
+            //showing modal for delete record
+            $('#mytable').on('click', '.delete', function () {
+              var usuario_id = $(this).data('id');
+              $('#DeleteModal').modal('show');
+              $('.usuario_id2').val(usuario_id);
+            });
+
+          });
+        </script>
+        <footer class="footer py-4">
+          <div class="container">
+            <div class="row align-items-center">
+              <div class="col-lg-4 text-lg-start"></div>
+              <div class="col-lg-4 my-3 my-lg-0">
+                <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+
+            </div>
+          </div>
+        </footer>
+      </body>
+
+</html>
